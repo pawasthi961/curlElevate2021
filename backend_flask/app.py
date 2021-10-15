@@ -1,9 +1,10 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request ,send_file, make_response
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from bson.json_util import dumps
 from werkzeug.security import generate_password_hash, check_password_hash
 from ml import result_score
+from digits import do_plot
 
 app = Flask(__name__)
 app.secret_key = "secret123"
@@ -123,6 +124,14 @@ def show_result():
     result = result_score()
     return jsonify(result)
 
+@app.route('/plot')
+def show_plot():
+    bytes_obj = do_plot()
+    print(bytes_obj)
+    return send_file(bytes_obj,
+                     attachment_filename='plot.png',
+                     mimetype='image/png')
+    
 
 if __name__ == "__main__":
     app.run(debug=True)

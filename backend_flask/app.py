@@ -5,6 +5,8 @@ from bson.json_util import dumps
 from werkzeug.security import generate_password_hash, check_password_hash
 from ml import result_score
 from digits import do_plot
+from testing_mnist import test
+
 
 app = Flask(__name__)
 app.secret_key = "secret123"
@@ -121,13 +123,12 @@ def not_found(error):
 
 @app.route('/show_result')
 def show_result():
-    result = result_score()
+    result = test()[1]
     return jsonify(result)
 
 @app.route('/plot')
 def show_plot():
-    bytes_obj = do_plot()
-    print(bytes_obj)
+    bytes_obj = test()[0]
     return send_file(bytes_obj,
                      attachment_filename='plot.png',
                      mimetype='image/png')

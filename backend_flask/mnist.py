@@ -1,7 +1,9 @@
 #Importing Libraries
-import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
+import random
+import pickle
+import tensorflow as tf
 
 #Loading MNIST dataset
 fashion_mnist = tf.keras.datasets.fashion_mnist
@@ -42,13 +44,15 @@ model.compile(optimizer='adam',loss = tf.keras.losses.SparseCategoricalCrossentr
 
 model.fit(train_images,train_labels,epochs = 50)
 
+# model.save(mnist_model.h50)
+tf.keras.models.save_model(model,"backend_flask/mnist_model")
+
+
+print("done")
+
+
 #returns Loss and Accuracy of the model
-test_loss,test_acc = model.evaluate(test_images,test_labels)
 
-#Returns predictions as a probability Distribution
-prob_dist_model = tf.keras.Sequential([model,tf.keras.layers.Softmax()])
-
-predictions = prob_dist_model.predict(test_images)
 
 #predictions[0]
 
@@ -60,7 +64,7 @@ predictions = prob_dist_model.predict(test_images)
 
 #To plot the Prediction along with the Confidence score and the True Label
 def plot_value_array(i,predictions_array,true_label):
-  plt.grid(False)
+
   #plt.xticks(range(10))
   #plt.yticks([])
   plt.ylim([0,1])
@@ -71,6 +75,29 @@ def plot_value_array(i,predictions_array,true_label):
   barplot[predicted_label].set_color('red')
   print('Predicted Label = ',predicted_label)
   print('True Label = ',true_label)
+  
+def test():
+  mp = tf.keras.models.load_model("mnist_model")
+
+  test_loss,test_acc = mp.evaluate(test_images,test_labels)
+  #Returns predictions as a probability Distribution
+  prob_dist_model = tf.keras.Sequential([mp,tf.keras.layers.Softmax()])
+
+  predictions = prob_dist_model.predict(test_images)
+  plt.grid(False)
+  i = random.randint(0,10) 
+  plt.figure(figsize = (10,3))
+  plt.subplot(1,2,1)
+  plt.imshow(test_images[i],cmap = plt.cm.binary)
+  plt.xlabel("{} ({})".format(class_names[np.argmax(predictions[i])],class_names[test_labels[i]]))
+  plt.subplot(1,2,2)
+  plot_value_array(i,predictions[i],test_labels[i])
+  print(i)
+  print('Confidence % = ',100*np.max(predictions[i]))
+
+  return (100*np.max(predictions[i]))
+
+
 
 #testing using index values of test_images
 #i = 0
@@ -100,33 +127,30 @@ def plot_value_array(i,predictions_array,true_label):
 #plot_value_array(i,predictions[i],test_labels[i])
 #print('Confidence % = ',100*np.max(predictions[i]))
 
-import random
+
 
 #Test the model by generating a randint
-i = random.randint(0,10) 
-plt.figure(figsize = (10,3))
-plt.subplot(1,2,1)
-plt.imshow(test_images[i],cmap = plt.cm.binary)
-plt.xlabel("{} ({})".format(class_names[np.argmax(predictions[i])],class_names[test_labels[i]]))
-plt.subplot(1,2,2)
-plot_value_array(i,predictions[i],test_labels[i])
-print(i)
-print('Confidence % = ',100*np.max(predictions[i]))
+
+
 
 #Test the model by taking input from the user along with the plots
-i = int(input("Enter an index value in the range 0-10000"))
-plt.figure(figsize = (10,3))
-plt.subplot(1,2,1)
-plt.imshow(test_images[i],cmap = plt.cm.binary)
-plt.xlabel("{} ({})".format(class_names[np.argmax(predictions[i])],class_names[test_labels[i]]))
-plt.subplot(1,2,2)
-plot_value_array(i,predictions[i],test_labels[i])
-print(i)
-print('Confidence % = ',100*np.max(predictions[i]))
+
+
+# i = int(input("Enter an index value in the range 0-10000"))
+# plt.figure(figsize = (10,3))
+# plt.subplot(1,2,1)
+# plt.imshow(test_images[i],cmap = plt.cm.binary)
+# plt.xlabel("{} ({})".format(class_names[np.argmax(predictions[i])],class_names[test_labels[i]]))
+# plt.subplot(1,2,2)
+# plot_value_array(i,predictions[i],test_labels[i])
+# print(i)
+# print('Confidence % = ',100*np.max(predictions[i]))
 
 #Test the model by taking input from the user (without plots)
-i = int(input("Enter an index value in the range 0-10000"))
-plt.imshow(test_images[i],cmap = plt.cm.binary)
-predicted_label = np.argmax(predictions[i])
-print('Predicted Label :',class_names[predicted_label],'\t','True Label :',class_names[test_labels[i]])
-print('Confidence % :',100*np.max(predictions[i]))
+
+
+# i = int(input("Enter an index value in the range 0-10000"))
+# plt.imshow(test_images[i],cmap = plt.cm.binary)
+# predicted_label = np.argmax(predictions[i])
+# print('Predicted Label :',class_names[predicted_label],'\t','True Label :',class_names[test_labels[i]])
+# print('Confidence % :',100*np.max(predictions[i]))

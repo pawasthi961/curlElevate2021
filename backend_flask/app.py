@@ -129,6 +129,7 @@ def show_result():
 @app.route('/plot')
 def show_plot():
     bytes_obj = test()[0]
+    result =  test()[1]
     return send_file(bytes_obj,
                      attachment_filename='plot.png',
                      mimetype='image/png')

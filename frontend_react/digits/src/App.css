@@ -1,30 +1,95 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300&display=swap");
+
 .App {
-  text-align: center; 
+  text-align: center;
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #20252c;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;  
+  align-items: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  font-family: "Inknut Antiqua", serif;
 }
 
-.result
-{
+.result {
   width: 300px;
   height: 50px;
   border: 1px black;
   border-radius: 10px;
   background-color: white;
   margin-top: 30px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
-.image input[type="file"]
+/* .image input[type="file"]
 {
   height: 100px;
   width: 100px;
   border: 2px black;
+} */
+
+.bt_right {
+  display: flex;
+  flex-direction: row;
+  margin: 20px 15px;
+  position: absolute;
+  top: 10%;
+  left: 5%;
+}
+
+.bt_right button {
+  border: 2px solid transparent;
+  border-radius: 15px;
+  background-color: #20252c;
+  padding: 5px;
+  margin: 5px;
+  font-size: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+}
+
+.bt_right button:hover {
+  color: white;
+  border: 2px solid white;
+}
+
+.child {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.child .accuracy {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 19px;
+  border: 1px solid #20252c;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.accuracy .score {
+  border: 1px solid #20252c;
+  /* background-color: white; */
+  border-radius: 5px;
+  /* padding: 5px;
+  color: black; */
+  margin-left: 9px;
+}
+
+.container img {
+  justify-content: center;
+  align-items: center;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  width: 20em;
+  height: 15em;
+  margin-top: 70px;
 }
